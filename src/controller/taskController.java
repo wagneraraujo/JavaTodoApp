@@ -39,11 +39,47 @@ public class taskController
             throw new RuntimeException("error create task" + e);
         }
         finally {
-            ConnectionFactory.closeConnection(connection);
+            ConnectionFactory.closeConnection(connection, statement);
         }
     }
 
-    public void update(Task task){}
+    public void update(Task task){
+
+        String sql = "UPDATE tasks SET idProject =?," +
+                "name = ?," +
+                "description = ?," +
+                "notes = ?," +
+                "completed = ? ," +
+                "deadline = ? ," +
+                "createdAt = ? ," +
+                "updatedAt = ?," +
+                "WHERE id = ?";
+
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+
+
+        try{
+            connection = ConnectionFactory.getConnection();
+            statement = connection.prepareStatement(sql);
+
+            statement.setInt(1, task.getIdProject());
+            statement.setString(1, task.getName());
+            statement.setString(1, task.getDescription());
+            statement.setString(1, task.getNotes());
+            statement.setBoolean(1,task.isCompleted());
+            statement.setDate(1, new Date(task.getDeadline().getTime()));
+            statement.setDate(1, new Date(task.getCreatedAt().getTime()));
+            statement.setDate(1, new Date(task.getUpdateAt().getTime()));
+
+            statement.execute();
+
+        } catch (Exception e) {
+            throw new RuntimeException("Error in update"+ e);
+        }
+
+    }
 
     public void removeById(int taskId) throws SQLDataException {
         String sql = "DELETE from tasks WHERE id = ?";
@@ -54,10 +90,13 @@ public class taskController
             conn = ConnectionFactory.getConnection();
             statement = conn.prepareStatement(sql);
         } catch (SQLException e) {
+            //runtimeException is for any kind of exception
             throw new RuntimeException("Error delete task" + e);
         }
         finally {
-            ConnectionFactory.closeConnection(conn);
+            //whenever I am open, I  have to close: connection and statement
+            ConnectionFactory.closeConnection(conn, statement);
+
         }
 
     }
