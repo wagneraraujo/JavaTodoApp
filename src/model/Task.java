@@ -25,6 +25,12 @@ public class Task {
         this.updateAt = updateAt;
     }
 
+    //other construct method
+    public Task(){
+        //when the task is created, this method executes at the same time.
+        this.createdAt = new Date();
+    }
+
     public int getId() {
         return id;
     }
