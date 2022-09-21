@@ -7,11 +7,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class taskController
-{
-
+public class taskController {
     public void save(Task task){
-
         String sql = "INSERT INTO tasks (idProject" +
                 "name," +
                 "description," +
@@ -26,7 +23,6 @@ public class taskController
         try {
             connection = ConnectionFactory.getConnection();
             statement = connection.prepareStatement(sql);
-
             statement.setInt(1, task.getIdProject());
             statement.setString(2,task.getName());
             statement.setString(3,task.getDescription());
@@ -44,9 +40,7 @@ public class taskController
             ConnectionFactory.closeConnection(connection, statement);
         }
     }
-
     public void update(Task task){
-
         String sql = "UPDATE tasks SET idProject =?," +
                 "name = ?," +
                 "description = ?," +
@@ -60,12 +54,9 @@ public class taskController
         Connection connection = null;
         PreparedStatement statement = null;
 
-
-
         try{
             connection = ConnectionFactory.getConnection();
             statement = connection.prepareStatement(sql);
-
             statement.setInt(1, task.getIdProject());
             statement.setString(2, task.getName());
             statement.setString(3, task.getDescription());
@@ -75,24 +66,20 @@ public class taskController
             statement.setDate(7, new Date(task.getCreatedAt().getTime()));
             statement.setDate(8, new Date(task.getUpdateAt().getTime()));
             statement.setInt(9, task.getId());
-
             statement.execute();
 
         } catch (Exception e) {
             throw new RuntimeException("Error in update"+ e);
         }
-
     }
 
     public void removeById(int taskId) throws SQLDataException {
         String sql = "DELETE from tasks WHERE id = ?";
         Connection conn = null;
         PreparedStatement statement = null;
-
         try{
             //create connection
             conn = ConnectionFactory.getConnection();
-
             //create query
             statement = conn.prepareStatement(sql);
         } catch (SQLException e) {
@@ -102,7 +89,6 @@ public class taskController
         finally {
             //whenever I am open, I  have to close: connection and statement
             ConnectionFactory.closeConnection(conn, statement);
-
         }
 
     }
@@ -111,18 +97,14 @@ public class taskController
         String sql = "SELECT * FROM tasks WHERE idProject = ?";
         Connection connection = null;
         PreparedStatement statement = null;
-
         // return result DB with values
         ResultSet resultSet = null;
         List<Task> tasks = new ArrayList<Task>();
-
         try{
             connection = ConnectionFactory.getConnection();
             statement = connection.prepareStatement(sql);
             statement.setInt(1,idProject);
-
             statement.executeQuery();
-
             while (resultSet.next()){
                 Task task = new Task();
                 //set values that are inside the resultSet
@@ -135,9 +117,9 @@ public class taskController
                 task.setDeadline(resultSet.getDate("deadline"));
                 task.setCreatedAt(resultSet.getDate("createdAt"));
                 task.setUpdateAt(resultSet.getDate("updateAt"));
-
                 //insert list inside this task
                 tasks.add(task);
+
             }
         }
         catch (Exception e){

@@ -16,6 +16,11 @@ public class Project {
         this.updateAt = updateAt;
     }
 
+    public Project() {
+        
+    }
+
+
     public int getId() {
         return id;
     }
