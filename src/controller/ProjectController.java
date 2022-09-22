@@ -11,11 +11,11 @@ import java.util.List;
 public class ProjectController {
 
     public void save(Project project){
-        String sql = "INSERT INtO projects(name," +
+        String sql = "INSERT INTO projects (name," +
                 "description," +
                 "createdAt," +
-                "updateAt," +
-                "VALUES (?, ?,?,?)";
+                "updateAt)" +
+                "VALUES (?,?,?,?)";
 
         Connection connection = null;
         PreparedStatement statement = null;
@@ -28,9 +28,8 @@ public class ProjectController {
 
             statement.setString(1, project.getName());
             statement.setString(2, project.getDescription());
-            statement.setDate(3, new Date(project.getCreateAt().getTime()));
-            statement.setDate(4, new Date(project.getUpdateAt().getTime()));
-
+            statement.setDate(3, new Date(project.getCreatedAt().getTime()));
+            statement.setDate(4, new Date(project.getUpdatedAt().getTime()));
             statement.execute();
 
         } catch (SQLException e) {
@@ -58,8 +57,8 @@ public class ProjectController {
 
             statement.setString(1, project.getName());
             statement.setString(2, project.getDescription());
-            statement.setDate(3, new Date( project.getUpdateAt().getTime()));
-            statement.setDate(4, new Date( project.getCreateAt().getTime()));
+            statement.setDate(3, (java.sql.Date) new Date( project.getUpdatedAt().getTime()));
+            statement.setDate(4, (java.sql.Date) new Date( project.getCreatedAt().getTime()));
 
             statement.execute();
 
@@ -80,19 +79,25 @@ public class ProjectController {
         ResultSet resultSet = null;
 
         try{
+
             connection = ConnectionFactory.getConnection();
             statement = connection.prepareStatement(sql);
 
             resultSet = statement.executeQuery();
 
-            while (resultSet.next()){
-                Project project = new Project();
 
+
+
+            while (resultSet.next()){
+                Project project =new Project();
                 project.setId(resultSet.getInt("id"));
                 project.setName(resultSet.getString("name"));
                 project.setDescription((resultSet.getString("description")));
-                project.setCreateAt(resultSet.getDate("createdAt"));
-                project.setUpdateAt(resultSet.getDate("updateAt"));
+
+                java.util.Date utilDate = new java.util.Date();
+                java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+                project.setCreatedAt(resultSet.getDate("createdAt"));
+                project.setUpdatedAt(resultSet.getDate("updateAt"));
 
                 projects.add(project);
 

@@ -4,20 +4,19 @@ public class Project {
     private int id;
     private String name;
     private String description;
-    private Date createAt;
+    private Date createdAt;
     private Date updateAt;
 
-    public Project(int id, String name, String description, Date createAt, Date updateAt) {
-
+    public Project(int id, String name, String description, Date createdAt, Date updatedAt) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.createAt = createAt;
-        this.updateAt = updateAt;
+        this.createdAt = createdAt;
+        this.updateAt = updatedAt;
     }
 
     public Project() {
-        
+
     }
 
 
@@ -45,20 +44,20 @@ public class Project {
         this.description = description;
     }
 
-    public Date getCreateAt() {
-        return createAt;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreateAt(Date createAt) {
-        this.createAt = createAt;
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public Date getUpdateAt() {
+    public Date getUpdatedAt() {
         return updateAt;
     }
 
-    public void setUpdateAt(Date updateAt) {
-        this.updateAt = updateAt;
+    public void setUpdatedAt(Date updatedAt) {
+        this.updateAt = updatedAt;
     }
 
     @Override
@@ -67,8 +66,8 @@ public class Project {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", createAt=" + createAt +
-                ", updateAt=" + updateAt +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updateAt +
                 '}';
     }
 }

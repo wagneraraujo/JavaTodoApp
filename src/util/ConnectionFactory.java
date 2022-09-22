@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class ConnectionFactory {
-    public static final String DRIVER = "com.mysql.jdbc.DRIVER";
+    public static final String DRIVER = "com.mysql.cj.jdbc.Driver";
     //    public static final String URL = "jdbc:mysql://localhost:3306/todoapp";
     public static final String URL = "jdbc:mysql://localhost:3306/todoapp";
     public static final String USER = "root";
@@ -18,7 +18,7 @@ public class ConnectionFactory {
             Class.forName(DRIVER);
             return DriverManager.getConnection(URL, USER, PASS);
         } catch (Exception ex) {
-            throw new RuntimeException("Error connection DB.");
+            throw new RuntimeException("Error connection DB." + ex);
         }
     }
 

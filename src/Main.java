@@ -1,14 +1,21 @@
-import util.ConnectionFactory;
+import controller.ProjectController;
+import model.Project;
 
-import java.sql.Connection;
+import java.util.Date;
+
 
 public class Main {
     public static void main(String[] args){
 
-        Connection c = ConnectionFactory.getConnection();
+        ProjectController projectController = new ProjectController();
 
-        //close ex
-        //ConnectionFactory.closeConnection(c);
+        Project project = new Project();
+        project.setName("Teste projeto");
+        project.setDescription("Criação de db teste");
+        project.setCreatedAt(new Date());
+        project.setUpdatedAt(new Date());
+
+        projectController.save(project);
 
     }
 }
