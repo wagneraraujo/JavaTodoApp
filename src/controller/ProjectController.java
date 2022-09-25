@@ -42,11 +42,7 @@ public class ProjectController {
 
     public void update(Project project){
 
-        String sql = "UPDATE projects SET name = ?," +
-                "description = ? ," +
-                "createdAt = ?," +
-                "updateAt = ?," +
-                "WHERE id = ?";
+        String sql = "UPDATE projects SET name = ?, description = ?, updateAt = ? WHERE id = ?";
 
         Connection connection = null;
         PreparedStatement statement = null;
@@ -57,14 +53,19 @@ public class ProjectController {
 
             statement.setString(1, project.getName());
             statement.setString(2, project.getDescription());
-            statement.setDate(3, (java.sql.Date) new Date( project.getUpdatedAt().getTime()));
-            statement.setDate(4, (java.sql.Date) new Date( project.getCreatedAt().getTime()));
+//            statement.setDate(3,new Date( project.getCreatedAt().getTime()));
+            statement.setDate(3,new Date( project.getUpdatedAt().getTime()));
+            statement.setInt(4, project.getId());
 
             statement.execute();
 
-        } catch (Exception e) {
-            throw new RuntimeException("Error update",e);
+        } catch (SQLException e) {
+            throw new RuntimeException("Error update" + e);
         }
+        finally {
+            ConnectionFactory.closeConnection(connection, statement);
+        }
+
 
     }
 

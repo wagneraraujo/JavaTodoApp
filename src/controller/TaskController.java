@@ -7,16 +7,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class taskController {
+public class TaskController {
     public void save(Task task){
-        String sql = "INSERT INTO tasks (idProject" +
-                "name," +
-                "description," +
-                "completed," +
-                "notes," +
-                "createdAt," +
-                "updateAt," +
-                ") VALUES (?,?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO tasks (idProject,name,description,completed,notes,deadline,createdAt,updateAt) VALUES (?,?,?,?,?,?,?,?)";
         Connection connection = null;
         PreparedStatement statement = null;
 
@@ -41,15 +34,7 @@ public class taskController {
         }
     }
     public void update(Task task){
-        String sql = "UPDATE tasks SET idProject =?," +
-                "name = ?," +
-                "description = ?," +
-                "notes = ?," +
-                "completed = ? ," +
-                "deadline = ? ," +
-                "createdAt = ? ," +
-                "updatedAt = ?," +
-                "WHERE id = ?";
+        String sql = "UPDATE tasks SET idProject =?,name = ?,description = ?,notes = ?,completed = ? ,deadline = ? ,updateAt = ? WHERE id = ?";
 
         Connection connection = null;
         PreparedStatement statement = null;
@@ -63,9 +48,8 @@ public class taskController {
             statement.setString(4, task.getNotes());
             statement.setBoolean(5,task.isCompleted());
             statement.setDate(6, new Date(task.getDeadline().getTime()));
-            statement.setDate(7, new Date(task.getCreatedAt().getTime()));
-            statement.setDate(8, new Date(task.getUpdateAt().getTime()));
-            statement.setInt(9, task.getId());
+            statement.setDate(7, new Date(task.getUpdateAt().getTime()));
+            statement.setInt(8, task.getId());
             statement.execute();
 
         } catch (Exception e) {
@@ -73,7 +57,7 @@ public class taskController {
         }
     }
 
-    public void removeById(int taskId) throws SQLDataException {
+    public void removeById(int taskId){
         String sql = "DELETE from tasks WHERE id = ?";
         Connection conn = null;
         PreparedStatement statement = null;
@@ -82,6 +66,8 @@ public class taskController {
             conn = ConnectionFactory.getConnection();
             //create query
             statement = conn.prepareStatement(sql);
+            statement.setInt(1, taskId);
+            statement.execute();
         } catch (SQLException e) {
             //runtimeException is for any kind of exception
             throw new RuntimeException("Error delete task" + e);
@@ -104,7 +90,7 @@ public class taskController {
             connection = ConnectionFactory.getConnection();
             statement = connection.prepareStatement(sql);
             statement.setInt(1,idProject);
-            statement.executeQuery();
+            resultSet = statement.executeQuery();
             while (resultSet.next()){
                 Task task = new Task();
                 //set values that are inside the resultSet
@@ -123,7 +109,7 @@ public class taskController {
             }
         }
         catch (Exception e){
-            throw new RuntimeException("error get tasks",e);
+            throw new RuntimeException("error get tasks" + e);
         }
         finally {
             ConnectionFactory.closeConnection(connection,statement, resultSet);
